@@ -1,52 +1,84 @@
 package Home_work_Java;
 
-import java.io.*;
-import java.lang.Math;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.lang.Math;
+import java.nio.charset.Charset;
 
-public class HW2 {
+
+public class HW2 {       
+    public static HashMap<String, Integer> tr = new HashMap<>();
+
+
     public static void main(String[] args) {
+        String[] textFromFile = new String[0];
 
-    }
 
-    public static String ReadFile() {
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get("input.txt"))) {
-            String fileName = "input.txt";
-            String content = Files.lines(Paths.get(fileName)).reduce("", String::concat);
-            // System.out.println(content);
-            return content;
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+        textFromFile = DataFromFile();
+        // Вычленим переменные
+        for(String i: textFromFile){
+            // System.out.println(i);
+            SelectData(i);
         }
-        return "Exeprion";
-    }
-
-    public static String Exponential(String variabl) {
-        double a = Double.valueOf(String.valueOf(
-                variabl.substring(variabl.lastIndexOf("a ") + 1,
-                        variabl.lastIndexOf("b"))));
-        double b = Double.valueOf(String.valueOf(variabl.substring(variabl.lastIndexOf("b " + 1))));
-        if (a == 0 && b == 0)
-            return "Ошибка";
+        // Теперь вычисляем значение
+        int a = tr.get("a");
+        int b = tr.get("b");
+        String forZap = "";
+        if(a != 0){
+            double resStep = Stepen(a, b);
+            forZap = String.valueOf(resStep);
+        }
         else {
-            double res = Math.pow(a, b);
-            String result = String.valueOf(res);
-            return result;
+            forZap = "не определено";
         }
+
+        // Выводим результат          
+        DataInFile(forZap);
+
+    }
+    // Вычленяем значения переменных
+    static void SelectData(String inText){
+        String [] resTxt = new String[]{};
+        resTxt = inText.split(" ");
+        tr.put(resTxt[0].toString(), Integer.parseInt(resTxt[1]));
     }
 
-    public static void WriteFile(String res) {
-        try(FileWriter writer = new FileWriter("output.txt", false))
-        {
-            writer.write(res);
-            writer.flush();
+    // Чтение данных из файла
+    static String[] DataFromFile(){
+        String[] resData = new String[0];
+        String lineStr = "";
+        int lenMass = 0;
+        try(BufferedReader br = new BufferedReader(new FileReader(".//Home_work_Java//input.txt", Charset.forName("UTF-8")))) {            
+            while((lineStr = br.readLine()) != null){
+                resData = Arrays.copyOf(resData, lenMass + 1);
+                resData[lenMass] = lineStr;
+                lenMass++;
+            }            
         }
         catch(IOException ex){
-
-            System.out.println(ex.getMessage());
+            System.out.println("Файл не найден!");
         }
+        return resData;
+    }
+
+    //
+    static void DataInFile(String txtZap){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(".//Home_work_Java//output.txt", Charset.forName("UTF-8")))) {
+		        bw.write(txtZap);
+		    }
+		    catch(IOException ex){		
+		        System.out.println(ex.getMessage());
+		    }
+    }
+
+    // Вычисляем степень числа
+    static double Stepen(int inA, int inB){
+        return Math.pow((double) inA, (double) inB);
     }
 
 }

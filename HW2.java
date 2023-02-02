@@ -20,12 +20,10 @@ public class HW2 {
 
 
         textFromFile = DataFromFile();
-        // Вычленим переменные
         for(String i: textFromFile){
             // System.out.println(i);
             SelectData(i);
         }
-        // Теперь вычисляем значение
         int a = tr.get("a");
         int b = tr.get("b");
         String forZap = "";
@@ -36,19 +34,16 @@ public class HW2 {
         else {
             forZap = "не определено";
         }
-
-        // Выводим результат          
+       
         DataInFile(forZap);
 
     }
-    // Вычленяем значения переменных
     static void SelectData(String inText){
         String [] resTxt = new String[]{};
         resTxt = inText.split(" ");
         tr.put(resTxt[0].toString(), Integer.parseInt(resTxt[1]));
     }
 
-    // Чтение данных из файла
     static String[] DataFromFile(){
         String[] resData = new String[0];
         String lineStr = "";
@@ -66,7 +61,6 @@ public class HW2 {
         return resData;
     }
 
-    //
     static void DataInFile(String txtZap){
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(".//Home_work_Java//output.txt", Charset.forName("UTF-8")))) {
 		        bw.write(txtZap);
@@ -76,7 +70,6 @@ public class HW2 {
 		    }
     }
 
-    // Вычисляем степень числа
     static double Stepen(int inA, int inB){
         return Math.pow((double) inA, (double) inB);
     }
